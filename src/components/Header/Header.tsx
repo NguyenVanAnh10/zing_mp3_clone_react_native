@@ -1,20 +1,61 @@
 import React from 'react';
-import {Avatar} from 'react-native-elements';
+import {Avatar, Input} from 'react-native-elements';
+import styled from 'styled-components/native';
 
-import {TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {StyleSheet} from 'react-native';
+
+const color = '#43484d';
+
+const StyledView = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const StyledInput = styled(Input).attrs({
+  containerStyle: {
+    flex: 1,
+    marginHorizontal: 10,
+  },
+  inputContainerStyle: {
+    borderBottomWidth: 0,
+  },
+  inputStyle: {
+    fontSize: 14,
+  },
+  errorStyle: {
+    display: 'none',
+  },
+})``;
+
+// TODO: use styled components for Avatar
+const styles = StyleSheet.create({
+  containerAvatar: {
+    backgroundColor: color,
+  },
+});
 
 export default function Header() {
   return (
-    <View>
+    <StyledView>
       <Avatar
-        size={32}
         rounded
-        icon={{name: 'person', type: 'ion-icons', size: 25}}
-        containerStyle={{backgroundColor: '#000'}}
+        size={25}
+        icon={{type: 'ion-icons', name: 'person', size: 20}}
+        containerStyle={styles.containerAvatar}
       />
-      <TextInput placeholder="Bài hát, playlist, nghệ sĩ..." />
-      <Icon name="notifications-outline" size={25} />
-    </View>
+      <StyledInput
+        autoCompleteType={undefined}
+        placeholder="Bài hát, playlist, nghệ sĩ..."
+        leftIcon={{
+          type: 'ion-icons',
+          name: 'search',
+          size: 20,
+          color,
+        }}
+        rightIcon={{type: 'ion-icons', name: 'mic', size: 20, color}}
+      />
+      <Icon name="notifications-outline" size={25} color={color} />
+    </StyledView>
   );
 }
