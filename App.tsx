@@ -6,8 +6,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Home from 'pages/Home';
 import Settings from 'pages/Settings';
 import Header from 'components/Header';
-import SongsContext from 'context/songs';
-import songReducer, {initialState} from 'react-reducer/songs';
+import SongsContext, {initialState} from 'context/songs';
+import songReducer from 'react-reducer/songs';
 
 const Tab = createBottomTabNavigator();
 

@@ -1,9 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
-import {Text} from 'react-native-elements';
 
 import withTrackBottomSheet from 'HOCs/withTrackBottomSheet';
-import useSongs from 'hooks/useSongs';
+import ListSong from 'components/ListSong';
 
 const StyledSafeAreaView = styled.View`
   padding-top: 10px;
@@ -12,14 +11,9 @@ const StyledSafeAreaView = styled.View`
 `;
 
 function Home() {
-  const [, {getSongs}] = useSongs();
-  useEffect(() => {
-    getSongs();
-  }, []);
-
   return (
     <StyledSafeAreaView>
-      <Text>Home</Text>
+      <ListSong />
     </StyledSafeAreaView>
   );
 }

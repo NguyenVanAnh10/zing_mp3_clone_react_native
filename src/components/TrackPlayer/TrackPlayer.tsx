@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Text, Button, Avatar, Slider} from 'react-native-elements';
 import TrackPlayer, {
   Event,
-  Track,
   useProgress,
   usePlaybackState,
   State,
@@ -10,6 +9,8 @@ import TrackPlayer, {
 import styled from 'styled-components/native';
 
 import {StyleSheet} from 'react-native';
+import {Song} from 'models/song';
+import useSongs, {useSong} from 'hooks/useSongs';
 
 const color = '#6733b9';
 
@@ -49,22 +50,29 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function TrackPlayerComponent({songs = []}: {songs: any[]}) {
-  const [currentSong, setCurrentSong] = useState<Track>();
+export default function TrackPlayerComponent() {
+  const [{songs}] = useSongs();
+  const [{song: currentSong}, {getSong}] = useSong();
   const playbackState = usePlaybackState();
+  console.log('currentSong', currentSong, 'songs', songs);
+
+  useEffect(() => {
+    TrackPlayer.addEventListener(Event.PlaybackTrackChanged, async () => {
+      const trackId = await TrackPlayer.getCurrentTrack();
+      const song: Song = await TrackPlayer.getTrack(trackId);
+      await getSong(song.encodeId as string);
+    });
+  }, []);
 
   useEffect(() => {
     async function register() {
       await TrackPlayer.setupPlayer({});
       await TrackPlayer.add(songs);
-      TrackPlayer.addEventListener(Event.PlaybackTrackChanged, async () => {
-        const trackId = await TrackPlayer.getCurrentTrack();
-        const track = await TrackPlayer.getTrack(trackId);
-        setCurrentSong(track);
-      });
     }
+    console.log('songs', songs);
+
     register();
-  }, [songs]);
+  }, [songs?.length, currentSong?.url]);
 
   const onPlay = () => {
     TrackPlayer.play();
@@ -98,13 +106,16 @@ export default function TrackPlayerComponent({songs = []}: {songs: any[]}) {
             name: 'musical-note',
             size: 25,
           }}
+          source={
+            currentSong?.thumbnail ? {uri: currentSong?.thumbnail} : undefined
+          }
           containerStyle={styles.containerAvatar}
         />
         <StyledTitleView>
           <StyledText numberOfLines={2} ellipsizeMode="tail">
             {currentSong?.title}
           </StyledText>
-          <StyledText>{currentSong?.artist}</StyledText>
+          <StyledText>{currentSong?.artistsNames}</StyledText>
         </StyledTitleView>
         <StyledControllerButton
           icon={{

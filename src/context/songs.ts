@@ -1,12 +1,12 @@
 import React from 'react';
 
-type TSongsState = {
-  state: {songs: any[]};
-  dispatch: React.Dispatch<any>;
-};
-const initialState: TSongsState = {
+import {TSongsContext} from './type';
+
+export const initialState: TSongsContext = {
   state: {
-    songs: [],
+    songs: {},
+    songIds: [],
+    getSong: {},
   },
   dispatch: () => {},
 };
