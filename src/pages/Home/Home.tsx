@@ -1,20 +1,27 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components/native';
+import {Text} from 'react-native-elements';
 
-import Header from 'components/Header';
-import TrackPlayer from 'components/TrackPlayer';
+import withTrackBottomSheet from 'HOCs/withTrackBottomSheet';
+import useSongs from 'hooks/useSongs';
 
 const StyledSafeAreaView = styled.View`
-  padding-top: 10;
-  padding-left: 15;
-  padding-right: 15;
+  padding-top: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
 `;
 
-export default function Home() {
+function Home() {
+  const [, {getSongs}] = useSongs();
+  useEffect(() => {
+    getSongs();
+  }, []);
+
   return (
     <StyledSafeAreaView>
-      <Header />
-      <TrackPlayer />
+      <Text>Home</Text>
     </StyledSafeAreaView>
   );
 }
+
+export default withTrackBottomSheet(Home);

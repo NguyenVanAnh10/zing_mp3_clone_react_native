@@ -10,6 +10,7 @@ const color = '#43484d';
 const StyledView = styled.View`
   flex-direction: row;
   align-items: center;
+  padding: 5px 10px;
 `;
 
 const StyledInput = styled(Input).attrs({

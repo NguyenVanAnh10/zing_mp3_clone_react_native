@@ -9,21 +9,28 @@ import TrackPlayer, {
 } from 'react-native-track-player';
 import styled from 'styled-components/native';
 
-import sound from 'assets/musics/test-music.mp3';
 import {StyleSheet} from 'react-native';
-import {showMinuteAndSecondFromSeconds} from 'utils/time';
 
 const color = '#6733b9';
+
+const StyledContainerView = styled.View`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background-color: white;
+`;
+
 const StyledView = styled.View`
-  margin-top: 10;
   flex-direction: row;
   align-items: center;
 `;
 
 const StyledTitleView = styled.View`
   flex: 1;
-  margin-left: 10;
-  margin-right: 10;
+  margin-left: 10px;
+  margin-right: 10px;
 `;
 
 const StyledText = styled(Text)``;
@@ -42,20 +49,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const songs = [
-  {
-    url: sound, // Load media from the app bundle
-    title: 'Chiều thành đô',
-    artist: 'Tuấn Vũ',
-  },
-  {
-    url: sound, // Load media from the app bundle
-    title: '2',
-    artist: 'Tuấn Vũ 2',
-  },
-];
-
-export default function TrackPlayerComponent() {
+export default function TrackPlayerComponent({songs = []}: {songs: any[]}) {
   const [currentSong, setCurrentSong] = useState<Track>();
   const playbackState = usePlaybackState();
 
@@ -70,7 +64,7 @@ export default function TrackPlayerComponent() {
       });
     }
     register();
-  }, []);
+  }, [songs]);
 
   const onPlay = () => {
     TrackPlayer.play();
@@ -93,7 +87,7 @@ export default function TrackPlayerComponent() {
   };
 
   return (
-    <>
+    <StyledContainerView>
       <PlaySlider />
       <StyledView>
         <Avatar
@@ -149,28 +143,25 @@ export default function TrackPlayerComponent() {
           onPress={onSkipToNext}
         />
       </StyledView>
-    </>
+    </StyledContainerView>
   );
 }
 
 const StyledSlider = styled(Slider).attrs({
   trackStyle: {
-    height: 3,
+    height: 2,
     backgroundColor: 'transparent',
   },
   thumbStyle: {
-    height: 10,
-    width: 10,
+    height: 7,
+    width: 7,
     backgroundColor: color,
   },
-})``;
-
-const StyledTimeView = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-`;
-const StyledTimeText = styled(Text)`
-  font-size: 10;
+})`
+  margin-top: -30px;
+  margin-bottom: -10px;
+  margin-left: -10px;
+  margin-right: -10px;
 `;
 
 const PlaySlider = () => {
@@ -187,14 +178,6 @@ const PlaySlider = () => {
         minimumTrackTintColor={color}
         step={1}
       />
-      <StyledTimeView>
-        <StyledTimeText>
-          {showMinuteAndSecondFromSeconds(position)}
-        </StyledTimeText>
-        <StyledTimeText>
-          {showMinuteAndSecondFromSeconds(duration)}
-        </StyledTimeText>
-      </StyledTimeView>
     </>
   );
 };
