@@ -10,7 +10,7 @@ export const getSigNumber = ({
 }: {
   api: string;
   id: string;
-  ctime: string;
+  ctime: string | number;
 }) => {
   // '/api/v2/song/get/streaming'
   return hmacSHA512(

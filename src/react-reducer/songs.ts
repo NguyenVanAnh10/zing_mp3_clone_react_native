@@ -19,10 +19,6 @@ const songReducer = produce((state: TSongsState, action) => {
       );
       break;
     case actionTypes.GET_SONG:
-      state.songs[action.payload.id] = {
-        ...state.songs[action.payload.id],
-        ...action.payload,
-      };
       state.getSong = {
         id: action.payload.id,
       };

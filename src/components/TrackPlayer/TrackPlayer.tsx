@@ -1,16 +1,16 @@
 import React, {useEffect} from 'react';
 import {Text, Button, Avatar, Slider} from 'react-native-elements';
 import TrackPlayer, {
-  Event,
   useProgress,
   usePlaybackState,
   State,
+  Event,
 } from 'react-native-track-player';
 import styled from 'styled-components/native';
 
 import {StyleSheet} from 'react-native';
-import {Song} from 'models/song';
 import useSongs, {useSong} from 'hooks/useSongs';
+import {Song} from 'models/song';
 
 const color = '#6733b9';
 
@@ -52,15 +52,14 @@ const styles = StyleSheet.create({
 
 export default function TrackPlayerComponent() {
   const [{songs}] = useSongs();
-  const [{song: currentSong}, {getSong}] = useSong();
   const playbackState = usePlaybackState();
-  console.log('currentSong', currentSong, 'songs', songs);
+  const [{song: currentSong}, {getSong}] = useSong();
 
   useEffect(() => {
     TrackPlayer.addEventListener(Event.PlaybackTrackChanged, async () => {
       const trackId = await TrackPlayer.getCurrentTrack();
       const song: Song = await TrackPlayer.getTrack(trackId);
-      await getSong(song.encodeId as string);
+      getSong(song?.encodeId as string);
     });
   }, []);
 
@@ -69,10 +68,9 @@ export default function TrackPlayerComponent() {
       await TrackPlayer.setupPlayer({});
       await TrackPlayer.add(songs);
     }
-    console.log('songs', songs);
 
     register();
-  }, [songs?.length, currentSong?.url]);
+  }, [songs]);
 
   const onPlay = () => {
     TrackPlayer.play();
@@ -112,10 +110,12 @@ export default function TrackPlayerComponent() {
           containerStyle={styles.containerAvatar}
         />
         <StyledTitleView>
-          <StyledText numberOfLines={2} ellipsizeMode="tail">
+          <StyledText numberOfLines={1} ellipsizeMode="tail">
             {currentSong?.title}
           </StyledText>
-          <StyledText>{currentSong?.artistsNames}</StyledText>
+          <StyledText numberOfLines={1} ellipsizeMode="tail">
+            {currentSong?.artistsNames}
+          </StyledText>
         </StyledTitleView>
         <StyledControllerButton
           icon={{
